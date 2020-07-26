@@ -10,6 +10,7 @@ Welcome to FairTorch's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   autodoc
 
 
 Indices and tables
