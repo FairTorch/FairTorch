@@ -7,10 +7,10 @@ Welcome to FairTorch's documentation!
 =====================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
-   autodoc
+   src/modules
 
 ..
     Indices and tables
