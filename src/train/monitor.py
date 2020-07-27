@@ -10,10 +10,12 @@ import torch
 import torch.nn as nn
 
 
-class Monitor(nn.Module):
+class Monitor:
     def __init__(self, model):
-        super(Monitor, self).__init__()
         self.model = model
+
+    def __call__(self, x):
+        return self.forward(x)
 
     def forward(self, x):
         """
