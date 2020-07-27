@@ -1,7 +1,7 @@
-train module
-============
+monitor module
+==============
 
-.. automodule:: train
+.. automodule:: monitor
    :members:
    :undoc-members:
    :show-inheritance:

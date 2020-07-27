@@ -5,4 +5,4 @@ train
    :maxdepth: 4
 
    prettyplot
-   train
+   monitor
