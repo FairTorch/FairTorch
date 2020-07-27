@@ -1,9 +1,6 @@
 import sys, os
-import mock
 
-MOCK_MODULES = ['torch', 'torch.nn']
-for mod_name in MOCK_MODULES:
-    sys.modules[mod_name] = mock.Mock()
+autodoc_mock_imports = ['torch', 'torch.nn']
 
 # Configuration file for the Sphinx documentation builder.
 #
