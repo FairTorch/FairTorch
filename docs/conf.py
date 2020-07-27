@@ -1,3 +1,10 @@
+import sys, os
+import mock
+
+MOCK_MODULES = ['torch', 'torch.nn']
+for mod_name in MOCK_MODULES:
+    sys.modules[mod_name] = mock.Mock()
+
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -59,6 +66,5 @@ html_static_path = ['_static']
 
 
 # add sourcecode to path
-import sys, os
 sys.path.insert(0, os.path.abspath('../src'))
 sys.path.insert(0, os.path.abspath('../src/train'))
