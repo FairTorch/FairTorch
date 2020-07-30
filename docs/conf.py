@@ -63,5 +63,7 @@ html_static_path = ['_static']
 
 
 # add sourcecode to path
-sys.path.insert(0, os.path.abspath('../src'))
-sys.path.insert(0, os.path.abspath('../src/train'))
+sys.path.insert(0, os.path.abspath('../api'))
+sys.path.insert(0, os.path.abspath('../api/preprocessing'))
+sys.path.insert(0, os.path.abspath('../api/training'))
+sys.path.insert(0, os.path.abspath('../api/evaluation'))
