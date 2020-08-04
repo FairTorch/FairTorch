@@ -1,6 +1,6 @@
 __pycache__
 *.pyc
-.DSStore
+.DS_Store
 
 # FairFace Dataset
 demo/dataset
