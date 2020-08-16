@@ -3,5 +3,5 @@ __pycache__
 .DS_Store
 
 # FairFace Dataset
-demo/dataset
+demo/dataset/images
 demo/.ipynb_checkpoints
