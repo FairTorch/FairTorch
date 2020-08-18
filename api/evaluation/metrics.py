@@ -6,56 +6,174 @@ A file for metrics.
 
 Parameter definitions:
 
-    :param pred_labels: predicted output from model as a 1D array
-    :param true_labels: the true labels as a 1D array (same size as pred_labels)
-    :param classes: the group of each element
+    :param pred_labels: predicted output from model as a 1D array (should be all 1's and 0's because binary output)
+    :param true_labels: the true labels as a 1D array (same size and format as pred_labels)
+    :param groups: the group of each element as a 1D array
 
 """
 
 import numpy as np
 
-def pred_pos(pred_labels, true_labels, classes):
+def pred_pos(pred_labels, true_labels, groups):
+    """
+    :return: dictionary of positive predictions for each group
+    """
+
     correct = pred_labels == true_labels
-    class_correct = np.zeros(np.unique(classes));
+    group_correct = {k : 0 for k in np.unique(groups)}
 
     for i, c in enumerate(correct):
         if c:
-            class_correct[true_labels[i]] += 1
+            group_correct[groups[i]] += 1
 
-    return class_correct
+    return group_correct
 
-def total_pred_pos(pred_labels, true_labels):
-    """true_labels is 1D array"""
-    return np.sum(pred_labels == true_labels)
+def total_pred_pos(pred_labels):
+    """
+    :return: integer number of positive predictions in whole sample
+    """
 
-def pred_neg(pred_labels, true_labels, classes):
-    correct = pred_labels != true_labels
-    class_correct = np.zeros(np.unique(classes));
+    return np.sum(pred_labels == 1)
+
+def pred_neg(pred_labels, true_labels, groups):
+    """
+    :return: dictionary of negative predictions for each group
+    """
+    
+    correct = pred_labels == 0
+    group_correct = {k : 0 for k in np.unique(groups)}
 
     for i, c in enumerate(correct):
         if c:
-            class_correct[true_labels[i]] += 1
+            group_correct[groups[i]] += 1
 
-    return class_correct
+    return group_correct
 
-def pred_prevalence(pred_labels, true_labels, classes):
-    class_total = np.zeros(np.unique(classes));
+def pred_prevalence(pred_labels, true_labels, groups):
+    """
+    :return: dictionary of the fraction of positive predictions within each group
+    """
 
-    for i, c in enumerate(classes):
-        class_total[classes[i]] += 1 #only works if classes is numbers
+    group_total = {k : 0 for k in np.unique(groups)}
+    pp = pred_pos(pred_labels, true_labels, groups)
 
-    return pred_pos(pred_labels, true_labels, classes) / class_total(pred_labels);
+    for item in groups:
+        group_total[item] += 1
 
-def pred_pos_rate(pred_labels, true_labels, classes):
-    return pred_pos(pred_labels, true_labels, classes) / total_pred_pos;
+    return {k : pp[k]/group_total[k] for k in pp}
+    
+def pred_pos_rate(pred_labels, true_labels, groups):
+    """
+    :return: dictionary of the fraction positive predictions that belong to each group
+    """
+    
+    tpp = total_pred_pos(pred_labels)
+    pp = pred_pos(pred_labels, true_labels, groups)
 
+    return {k: v / tpp for k, v in pp.items()}
+
+def true_pos(pred_labels, true_labels, groups):
+    """
+    :return: dictionary of total true positive in each group
+    """
+    group_correct = {k : 0 for k in np.unique(groups)}
+
+    for i in range(len(pred_labels)):
+      if pred_labels[i] == 1 and true_labels[i] == 1:
+        group_correct[groups[i]] += 1
         
-classification_scores = np.array([[ 30,   1,  10,  80],
-                                    [-10,  20,   0,  -5],  
-                                    [ 27,  50,   9,  30],  
-                                    [ -1,   0,  84,   3],  
-                                    [  5,   2,  10,   0]])
-true_labels = np.array([0, 1, 1, 2, 3])
-pred_labels = np.array([3, 1, 1, 2, 2])
-print(pred_neg(pred_labels, true_labels, np.arange(0,4)))
+    return group_correct
 
+def false_neg (pred_labels, true_labels, groups):
+    """
+    :return: dictionary of total false negative predictions for each group
+    """
+
+    group_correct = {k : 0 for k in np.unique(groups)}
+    for i in range(len(pred_labels)):
+      if pred_labels[i] == 0 and true_labels[i] == 1:
+        group_correct[groups[i]] += 1
+        
+    return group_correct
+
+def false_pos(pred_labels, true_labels, groups):
+    """
+    :return: dictionary of total false positive predictions for each group
+    """
+
+    group_correct = {k : 0 for k in np.unique(groups)}
+    for i in range(len(pred_labels)):
+      if pred_labels[i] == 1 and true_labels[i] == 0:
+        group_correct[groups[i]] += 1
+        
+    return group_correct
+
+
+def true_neg (pred_labels, true_labels, groups):
+    """
+    :return: dictionary of total true negative predictions for each group
+    """
+
+    group_correct = {k : 0 for k in np.unique(groups)}
+    for i in range(len(pred_labels)):
+      if pred_labels[i] == 0 and true_labels[i] == 0:
+        group_correct[groups[i]] += 1
+        
+    return group_correct
+
+def false_disc_rate(pred_labels, true_labels, groups):
+    """
+    :return: dictionary of fraction of false positives within the predicted positive of the group
+    """
+    fp = false_pos(pred_labels, true_labels, groups)
+    pp = pred_pos(pred_labels, true_labels, groups)
+
+    return {k : fp[k]/pp[k] for k in fp}
+
+def false_omis_rate(pred_labels, true_labels, groups):
+    """
+    :return: dictionary of fraction of false negatives within the predicted negatives of the group
+    """
+
+    fn = false_neg(pred_labels, true_labels, groups)
+    pn = pred_neg(pred_labels, true_labels, groups)
+
+    return {k : fp[k]/pp[k] for k in fn}
+
+
+def false_pos_rate (pred_labels, true_labels, groups):
+  """
+  :return: dictionary of fraction of false positives within the labeled negatives of the group
+  """
+  unique_groups = np.unique(groups)
+  labeled_neg = {k : 0 for k in unique_groups}
+  group_correct = {k : 0 for k in unique_groups}
+  for i in range(len(pred_labels)):
+    if true_labels[i] == 0:
+      labeled_neg[groups[i]] += 1
+      if pred_labels[i] == 1:
+        group_correct[groups[i]] += 1
+  
+  for i in range(len(group_correct)):
+    group_correct[groups[i]] /= labeled_neg[groups[i]]  
+        
+  return group_correct
+
+
+def false_neg_rate (pred_labels, true_labels, groups):
+  """
+  :return: dictionary of fraction of false negatives within the labeled positives of the group
+  """
+  unique_groups = np.unique(groups)
+  labeled_pos = {k : 0 for k in unique_groups}
+  group_correct = {k : 0 for k in unique_groups}
+  for i in range(len(pred_labels)):
+    if true_labels[i] == 1:
+      labeled_pos[groups[i]] += 1
+      if pred_labels[i] == 0:
+        group_correct[groups[i]] += 1
+
+  for i in range(len(unique_groups)):
+    group_correct[unique_groups[i]] /= labeled_pos[unique_groups[i]]  
+        
+  return group_correct
