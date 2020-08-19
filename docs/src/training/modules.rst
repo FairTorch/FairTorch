@@ -1,8 +1,8 @@
-train
-=====
+training
+========
 
 .. toctree::
    :maxdepth: 4
 
-   prettyplot
    monitor
+   model_wrappers

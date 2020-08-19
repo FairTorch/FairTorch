@@ -1,0 +1,3 @@
+import nn
+
+print("test")
