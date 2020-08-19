@@ -8,14 +8,16 @@ the forward pass.
 """
 import torch
 import torch.nn as nn
+from torch.nn import Module
 
 
-class Monitor:
+class Monitor(Module):
+    """
+    Bases: :class:`torch.nn.Module`
+    """
     def __init__(self, model):
+        super(Monitor, self).__init__()
         self.model = model
-
-    def __call__(self, x):
-        return self.forward(x)
 
     def forward(self, x):
         """
