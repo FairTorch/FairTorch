@@ -1,3 +1,0 @@
-import nn
-
-print("test")
