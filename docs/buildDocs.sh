@@ -18,7 +18,7 @@ set -x
  
 apt-get update
 apt-get -y install git rsync python3-sphinx python3-sphinx-rtd-theme python-pip
-pip install mock
+pip3 install mock
 
 #####################
 # DECLARE VARIABLES #
