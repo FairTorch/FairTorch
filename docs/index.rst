@@ -10,7 +10,10 @@ Welcome to FairTorch's documentation!
    :maxdepth: 3
    :caption: Contents:
 
+   src/installation
    src/modules
+   src/examples
+   src/about
 
 ..
     Indices and tables

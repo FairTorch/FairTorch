@@ -1,2 +1,8 @@
 __pycache__
 *.pyc
+.DS_Store
+
+# FairFace Example
+examples/fairface/fairface_dataset
+examples/fairface/.ipynb_checkpoints
+examples/fairface/.empty
