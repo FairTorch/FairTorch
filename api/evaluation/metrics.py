@@ -73,8 +73,7 @@ def pred_pos_rate(pred_labels, true_labels, groups):
     tpp = total_pred_pos(pred_labels)
     pp = pred_pos(pred_labels, true_labels, groups)
 
-    ppr = {k: v / tpp for k, v in pp.items()}
-    return {k: v/ ppr[priv_group] for k, v in ppr.items()}
+    return {k: v / tpp for k, v in pp.items()}
 
 def true_pos(pred_labels, true_labels, groups):
     """
@@ -183,13 +182,14 @@ def false_neg_rate (pred_labels, true_labels, groups):
   return group_correct
 
 def Demographic_Parity(pred_labels, true_labels, groups, priv_group=None):
-
     if priv_group == None: #is it better if there is no relative group
         priv_group = groups[0]
 
     pp = pred_pos(pred_labels, true_labels, groups)
-    print(pp)
-    return {k: (v/pp[priv_group] if pp[priv_group] != 0 else "DivisionByZero: " + str(v) + "/0") for k, v in pp.items()}
+
+    if pp[priv_group] != 0:
+        return {k: v/pp[priv_group] for k, v in pp.items()}
+    raise ZeroDivisionError("Privileged group has 0 predicted positives")
 
 def Equality_of_Opportunity(pred_labels, true_labels, groups, priv_group=None):
     
@@ -197,7 +197,7 @@ def Equality_of_Opportunity(pred_labels, true_labels, groups, priv_group=None):
         priv_group = groups[0]
 
     tp = true_pos(pred_labels, true_labels, groups)
-    return {k: (v/tp[priv_group] if tp[priv_group] != 0 else "DivisionByZero: " + str(v) + "/0") for k, v in tp.items()}
+    return {k: (v/tp[priv_group] if tp[priv_group] != 0 else 0.00) for k, v in tp.items()}
 
 def Equalized_odds(pred_labels, true_labels, groups, priv_group=None):
     if priv_group == None:
@@ -208,4 +208,4 @@ true_labels = np.array([0, 1, 1, 0, 0, 1, 1, 1])
 pred_labels = np.array([0, 0, 1, 0, 1, 1, 0, 0])
 groups = np.array(['a', 'b', 'c', 'd', 'd', 'd', 'c', 'b'])
 
-print(Demographic_Parity(pred_labels, true_labels, groups, 'b'))
+print(Demographic_Parity(pred_labels, true_labels, groups, 'd'))
