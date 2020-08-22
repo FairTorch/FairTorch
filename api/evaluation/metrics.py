@@ -1,6 +1,6 @@
 """
-metrics.py
-==========
+Fairness Metrics
+================
 
 A file for metrics.
 
@@ -17,7 +17,8 @@ import numpy as np
 
 def pred_pos(pred_labels, true_labels, groups):
     """
-    Demographic Parity
+    Predictive Positive
+
     :return: dictionary of positive predictions for each group
     """
 
@@ -32,6 +33,8 @@ def pred_pos(pred_labels, true_labels, groups):
 
 def total_pred_pos(pred_labels):
     """
+    Calculates total predictive positives across all groups :math:`TPP=\\sum_{g_1}^{g_n} PP_g`
+
     :return: integer number of positive predictions in whole sample
     """
 
@@ -67,6 +70,8 @@ def pred_prevalence(pred_labels, true_labels, groups):
     #make privelegedgroup a default parameter, just 1st one if nothing
 def pred_pos_rate(pred_labels, true_labels, groups): 
     """
+    Calculates predictive positive rate as :math:`\\frac{PP_g}{TPP}`
+
     :return: dictionary of the fraction positive predictions that belong to each group
     """
     
@@ -182,6 +187,10 @@ def false_neg_rate (pred_labels, true_labels, groups):
   return group_correct
 
 def Demographic_Parity(pred_labels, true_labels, groups, priv_group=None):
+    """
+    :return: 
+    """
+    
     if priv_group == None: #is it better if there is no relative group
         priv_group = groups[0]
 
@@ -197,15 +206,24 @@ def Equality_of_Opportunity(pred_labels, true_labels, groups, priv_group=None):
         priv_group = groups[0]
 
     tp = true_pos(pred_labels, true_labels, groups)
-    return {k: (v/tp[priv_group] if tp[priv_group] != 0 else 0.00) for k, v in tp.items()}
 
-def Equalized_odds(pred_labels, true_labels, groups, priv_group=None):
-    if priv_group == None:
-        priv_group = groups[0]
-    tpr = true_pos(pred_labels, true_labels, groups)[priv_group]
+    if tp[priv_group] != 0:
+        return {k: v/tp[priv_group]  for k, v in tp.items()}
+    raise ZeroDivisionError("Privileged group has 0 true positives")
 
-true_labels = np.array([0, 1, 1, 0, 0, 1, 1, 1])
-pred_labels = np.array([0, 0, 1, 0, 1, 1, 0, 0])
+def Equalized_Odds(pred_labels, true_labels, groups, priv_group=None):    
+    if priv_group is None:        
+        priv_group = groups[0]    
+    tpr = Equality_of_Opportunity(pred_labels, true_labels, groups, priv_group)
+    fp = false_pos(pred_labels, true_labels, groups)    
+    if fp[priv_group] != 0:
+        fpr = {k: (v/fp[priv_group]) for k, v in fp.items()}   
+        return {k:(tp,fpr[k]) for k,tp in tpr.items()}
+    raise ZeroDivisionError("Privileged group has 0 false positives")     
+    
+
+pred_labels = np.array([0, 1, 1, 0, 0, 1, 1, 1])
+true_labels = np.array([0, 0, 1, 0, 1, 1, 0, 0])
 groups = np.array(['a', 'b', 'c', 'd', 'd', 'd', 'c', 'b'])
 
-print(Demographic_Parity(pred_labels, true_labels, groups, 'd'))
+print(Equalized_Odds(pred_labels, true_labels, groups, 'c'))
