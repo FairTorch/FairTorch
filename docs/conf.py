@@ -6,7 +6,7 @@ import nn
 import optim
 import functional as F
 
-MOCK_MODULES = ['torch', 'torch.nn', 'torch.nn.functional', 'torch.optim', 'numpy']
+MOCK_MODULES = ['torch', 'torch.nn', 'torch.nn.functional', 'torch.optim']
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = mock.Mock(Module=object, 
                                       relu=F.relu, 
