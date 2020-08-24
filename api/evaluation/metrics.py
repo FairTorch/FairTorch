@@ -2,8 +2,6 @@
 Fairness Metrics
 ================
 
-A file for metrics.
-
 Parameter definitions:
 
     :param pred_labels:     predicted output from model as a 1D array (should be all 1's and 0's because binary output)
@@ -17,7 +15,7 @@ import numpy as np
 
 def pred_pos(pred_labels, true_labels, groups):
     """
-    Predictive Positive
+    Predicted Positive :math: `(PP_g)`
 
     :return: dictionary of positive predictions for each group
     """
@@ -42,6 +40,8 @@ def total_pred_pos(pred_labels):
 
 def pred_neg(pred_labels, true_labels, groups):
     """
+    Predicted Negative :math: `(PN_g)`
+
     :return: dictionary of negative predictions for each group
     """
     
@@ -131,6 +131,9 @@ def true_neg (pred_labels, true_labels, groups):
 
 def false_disc_rate(pred_labels, true_labels, groups):
     """
+    :math: FDR_g = \\frac{FP_g}{PP_g} = P(Y=0 | \\hat{Y} = 1, A = a_i) 
+
+
     :return: dictionary of fraction of false positives within the predicted positive of the group
     """
     fp = false_pos(pred_labels, true_labels, groups)
@@ -140,6 +143,8 @@ def false_disc_rate(pred_labels, true_labels, groups):
 
 def false_omis_rate(pred_labels, true_labels, groups):
     """
+    :math: FOR_g = \\frac{FN_g}{PN_g} = P(Y=1 | \\hat{Y} = 0, A = a_i) 
+
     :return: dictionary of fraction of false negatives within the predicted negatives of the group
     """
 
@@ -151,6 +156,8 @@ def false_omis_rate(pred_labels, true_labels, groups):
 
 def false_pos_rate (pred_labels, true_labels, groups):
   """
+  :math: FPR_g = \\frac{FP_g}{TN_g + FP_g} = P(\\hat{Y}=1 | Y= 0, A = a_i) 
+
   :return: dictionary of fraction of false positives within the labeled negatives of the group
   """
   unique_groups = np.unique(groups)
@@ -170,6 +177,8 @@ def false_pos_rate (pred_labels, true_labels, groups):
 
 def false_neg_rate (pred_labels, true_labels, groups):
   """
+  :math: FNR_g = \\frac{FN_g}{TP_g + FN_g} = P(\hat{Y}=0 |  Y = 1, A = a_i) 
+
   :return: dictionary of fraction of false negatives within the labeled positives of the group
   """
   unique_groups = np.unique(groups)
@@ -188,7 +197,9 @@ def false_neg_rate (pred_labels, true_labels, groups):
 
 def Demographic_Parity(pred_labels, true_labels, groups, priv_group=None):
     """
-    :return: 
+    A fair algorithm would have an equal rate of positive outcomes in privileged and unprivileged groups.
+
+    :return: dictionary of predicted positive outcomes relative to the privileged group
     """
     
     if priv_group == None: #is it better if there is no relative group
@@ -201,7 +212,11 @@ def Demographic_Parity(pred_labels, true_labels, groups, priv_group=None):
     raise ZeroDivisionError("Privileged group has 0 predicted positives")
 
 def Equality_of_Opportunity(pred_labels, true_labels, groups, priv_group=None):
-    
+    """
+    A fair algorithm would have an equal rate of true positives in privileged and unprivileged groups.
+
+    :return: dictionary of true positives relative to the privileged group
+    """
     if priv_group == None:
         priv_group = groups[0]
 
@@ -211,7 +226,15 @@ def Equality_of_Opportunity(pred_labels, true_labels, groups, priv_group=None):
         return {k: v/tp[priv_group]  for k, v in tp.items()}
     raise ZeroDivisionError("Privileged group has 0 true positives")
 
-def Equalized_Odds(pred_labels, true_labels, groups, priv_group=None):    
+def Equalized_Odds(pred_labels, true_labels, groups, priv_group=None):
+    """
+    :math:`P(Y=1|A=0,Y=y) = P(\\hat{Y} = 1 | A=1, Y=y), \\hat{y} \\in \\{0,1\\}`
+
+    A fair algorithm should have equal rates for true positivees and false positives in the privileged and unprivileged groups respectively. 
+    
+    :return: dictionary of tuples consisting of true positives and false positives, relative to the privileged group
+    """
+
     if priv_group is None:        
         priv_group = groups[0]    
     tpr = Equality_of_Opportunity(pred_labels, true_labels, groups, priv_group)
