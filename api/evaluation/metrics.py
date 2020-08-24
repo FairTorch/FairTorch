@@ -15,7 +15,7 @@ import numpy as np
 
 def pred_pos(pred_labels, true_labels, groups):
     """
-    Predicted Positive :math: `(PP_g)`
+    Predicted Positive :math:`(PP_g)`
 
     :return: dictionary of positive predictions for each group
     """
@@ -40,7 +40,7 @@ def total_pred_pos(pred_labels):
 
 def pred_neg(pred_labels, true_labels, groups):
     """
-    Predicted Negative :math: `(PN_g)`
+    Predicted Negative :math:`(PN_g)`
 
     :return: dictionary of negative predictions for each group
     """
@@ -70,7 +70,7 @@ def pred_prevalence(pred_labels, true_labels, groups):
     #make privelegedgroup a default parameter, just 1st one if nothing
 def pred_pos_rate(pred_labels, true_labels, groups): 
     """
-    Calculates predictive positive rate as :math:`\\frac{PP_g}{TPP}`
+    Calculates predictive positive rate as :math:`PPR_g=\\frac{PP_g}{TPP}`
 
     :return: dictionary of the fraction positive predictions that belong to each group
     """
@@ -131,7 +131,7 @@ def true_neg (pred_labels, true_labels, groups):
 
 def false_disc_rate(pred_labels, true_labels, groups):
     """
-    :math: FDR_g = \\frac{FP_g}{PP_g} = P(Y=0 | \\hat{Y} = 1, A = a_i) 
+    :math: `FDR_g = \\frac{FP_g}{PP_g} = P(Y=0 | \\hat{Y} = 1, A = a_i)`
 
 
     :return: dictionary of fraction of false positives within the predicted positive of the group
@@ -143,7 +143,7 @@ def false_disc_rate(pred_labels, true_labels, groups):
 
 def false_omis_rate(pred_labels, true_labels, groups):
     """
-    :math: FOR_g = \\frac{FN_g}{PN_g} = P(Y=1 | \\hat{Y} = 0, A = a_i) 
+    :math: `FOR_g = \\frac{FN_g}{PN_g} = P(Y=1 | \\hat{Y} = 0, A = a_i)`
 
     :return: dictionary of fraction of false negatives within the predicted negatives of the group
     """
@@ -156,7 +156,7 @@ def false_omis_rate(pred_labels, true_labels, groups):
 
 def false_pos_rate (pred_labels, true_labels, groups):
   """
-  :math: FPR_g = \\frac{FP_g}{TN_g + FP_g} = P(\\hat{Y}=1 | Y= 0, A = a_i) 
+  :math:`FPR_g = \\frac{FP_g}{TN_g + FP_g} = P(\\hat{Y}=1 | Y= 0, A = a_i)`
 
   :return: dictionary of fraction of false positives within the labeled negatives of the group
   """
@@ -177,7 +177,7 @@ def false_pos_rate (pred_labels, true_labels, groups):
 
 def false_neg_rate (pred_labels, true_labels, groups):
   """
-  :math: FNR_g = \\frac{FN_g}{TP_g + FN_g} = P(\hat{Y}=0 |  Y = 1, A = a_i) 
+  :math:`FNR_g = \\frac{FN_g}{TP_g + FN_g} = P(\\hat{Y}=0 |  Y = 1, A = a_i)`
 
   :return: dictionary of fraction of false negatives within the labeled positives of the group
   """
