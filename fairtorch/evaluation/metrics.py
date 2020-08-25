@@ -22,11 +22,11 @@ def pred_pos(pred_labels, true_labels, groups):
     """
 
     if isinstance(pred_labels, Tensor):
-        pred_labels = pred_labels.numpy()
+        pred_labels = pred_labels.detach().numpy()
     if isinstance(true_labels, Tensor):
-        true_labels = true_labels.numpy()
+        true_labels = true_labels.detach().numpy()
     if isinstance(groups, Tensor):
-        groups = groups.numpy()
+        groups = groups.detach().numpy()
 
     correct = pred_labels == true_labels
     group_correct = {k : 0 for k in np.unique(groups)}
@@ -45,7 +45,7 @@ def total_pred_pos(pred_labels):
     """
     
     if isinstance(pred_labels, Tensor):
-        pred_labels = pred_labels.numpy()
+        pred_labels = pred_labels.detach().numpy()
 
     return np.sum(pred_labels == 1)
 
@@ -57,11 +57,11 @@ def pred_neg(pred_labels, true_labels, groups):
     """
     
     if isinstance(pred_labels, Tensor):
-        pred_labels = pred_labels.numpy()
+        pred_labels = pred_labels.detach().numpy()
     if isinstance(true_labels, Tensor):
-        true_labels = true_labels.numpy()
+        true_labels = true_labels.detach().numpy()
     if isinstance(groups, Tensor):
-        groups = groups.numpy()
+        groups = groups.detach().numpy()
     
     correct = pred_labels == 0
     group_correct = {k : 0 for k in np.unique(groups)}
@@ -80,9 +80,9 @@ def pred_prevalence(pred_labels, true_labels, groups):
     """
 
     if isinstance(pred_labels, Tensor):
-        pred_labels = pred_labels.numpy()
+        pred_labels = pred_labels.detach().numpy()
     if isinstance(true_labels, Tensor):
-        true_labels = true_labels.numpy()
+        true_labels = true_labels.detach().numpy()
     if isinstance(groups, Tensor):
         groups = groups.numpy()
     
@@ -103,11 +103,11 @@ def pred_pos_rate(pred_labels, true_labels, groups):
     """
     
     if isinstance(pred_labels, Tensor):
-        pred_labels = pred_labels.numpy()
+        pred_labels = pred_labels.detach().numpy()
     if isinstance(true_labels, Tensor):
-        true_labels = true_labels.numpy()
+        true_labels = true_labels.detach().numpy()
     if isinstance(groups, Tensor):
-        groups = groups.numpy()
+        groups = groups.detach().numpy()
     
     tpp = total_pred_pos(pred_labels)
     pp = pred_pos(pred_labels, true_labels, groups)
@@ -124,11 +124,11 @@ def true_pos(pred_labels, true_labels, groups):
     """
     
     if isinstance(pred_labels, Tensor):
-        pred_labels = pred_labels.numpy()
+        pred_labels = pred_labels.detach().numpy()
     if isinstance(true_labels, Tensor):
-        true_labels = true_labels.numpy()
+        true_labels = true_labels.detach().numpy()
     if isinstance(groups, Tensor):
-        groups = groups.numpy()
+        groups = groups.detach().numpy()
     
     group_correct = {k : 0 for k in np.unique(groups)}
 
@@ -148,11 +148,11 @@ def false_neg (pred_labels, true_labels, groups):
     """
     
     if isinstance(pred_labels, Tensor):
-        pred_labels = pred_labels.numpy()
+        pred_labels = pred_labels.detach().numpy()
     if isinstance(true_labels, Tensor):
-        true_labels = true_labels.numpy()
+        true_labels = true_labels.detach().numpy()
     if isinstance(groups, Tensor):
-        groups = groups.numpy()
+        groups = groups.detach().numpy()
 
     group_correct = {k : 0 for k in np.unique(groups)}
     for i in range(len(pred_labels)):
@@ -171,11 +171,11 @@ def false_pos(pred_labels, true_labels, groups):
     """
     
     if isinstance(pred_labels, Tensor):
-        pred_labels = pred_labels.numpy()
+        pred_labels = pred_labels.detach().numpy()
     if isinstance(true_labels, Tensor):
-        true_labels = true_labels.numpy()
+        true_labels = true_labels.detach().numpy()
     if isinstance(groups, Tensor):
-        groups = groups.numpy()
+        groups = groups.detach().numpy()
 
     group_correct = {k : 0 for k in np.unique(groups)}
     for i in range(len(pred_labels)):
@@ -195,11 +195,11 @@ def true_neg (pred_labels, true_labels, groups):
     """
     
     if isinstance(pred_labels, Tensor):
-        pred_labels = pred_labels.numpy()
+        pred_labels = pred_labels.detach().numpy()
     if isinstance(true_labels, Tensor):
-        true_labels = true_labels.numpy()
+        true_labels = true_labels.detach().numpy()
     if isinstance(groups, Tensor):
-        groups = groups.numpy()
+        groups = groups.detach().numpy()
 
     group_correct = {k : 0 for k in np.unique(groups)}
     for i in range(len(pred_labels)):
@@ -216,11 +216,11 @@ def false_disc_rate(pred_labels, true_labels, groups):
     """
     
     if isinstance(pred_labels, Tensor):
-        pred_labels = pred_labels.numpy()
+        pred_labels = pred_labels.detach().numpy()
     if isinstance(true_labels, Tensor):
-        true_labels = true_labels.numpy()
+        true_labels = true_labels.detach().numpy()
     if isinstance(groups, Tensor):
-        groups = groups.numpy()
+        groups = groups.detach().numpy()
     
     fp = false_pos(pred_labels, true_labels, groups)
     pp = pred_pos(pred_labels, true_labels, groups)
@@ -235,11 +235,11 @@ def false_omis_rate(pred_labels, true_labels, groups):
     """
     
     if isinstance(pred_labels, Tensor):
-        pred_labels = pred_labels.numpy()
+        pred_labels = pred_labels.detach().numpy()
     if isinstance(true_labels, Tensor):
-        true_labels = true_labels.numpy()
+        true_labels = true_labels.detach().numpy()
     if isinstance(groups, Tensor):
-        groups = groups.numpy()
+        groups = groups.detach().numpy()
 
     fn = false_neg(pred_labels, true_labels, groups)
     pn = pred_neg(pred_labels, true_labels, groups)
@@ -255,11 +255,11 @@ def false_pos_rate (pred_labels, true_labels, groups):
     """
     
     if isinstance(pred_labels, Tensor):
-        pred_labels = pred_labels.numpy()
+        pred_labels = pred_labels.detach().numpy()
     if isinstance(true_labels, Tensor):
-        true_labels = true_labels.numpy()
+        true_labels = true_labels.detach().numpy()
     if isinstance(groups, Tensor):
-        groups = groups.numpy()
+        groups = groups.detach().numpy()
     
     unique_groups = np.unique(groups)
     labeled_neg = {k : 0 for k in unique_groups}
@@ -284,11 +284,11 @@ def false_neg_rate (pred_labels, true_labels, groups):
     """
     
     if isinstance(pred_labels, Tensor):
-        pred_labels = pred_labels.numpy()
+        pred_labels = pred_labels.detach().numpy()
     if isinstance(true_labels, Tensor):
-        true_labels = true_labels.numpy()
+        true_labels = true_labels.detach().numpy()
     if isinstance(groups, Tensor):
-        groups = groups.numpy()
+        groups = groups.detach().numpy()
   
     unique_groups = np.unique(groups)
     labeled_pos = {k : 0 for k in unique_groups}
@@ -314,11 +314,11 @@ def Demographic_Parity(pred_labels, true_labels, groups, priv_group=None):
     """
     
     if isinstance(pred_labels, Tensor):
-        pred_labels = pred_labels.numpy()
+        pred_labels = pred_labels.detach().numpy()
     if isinstance(true_labels, Tensor):
-        true_labels = true_labels.numpy()
+        true_labels = true_labels.detach().numpy()
     if isinstance(groups, Tensor):
-        groups = groups.numpy()
+        groups = groups.detach().numpy()
     
     if priv_group == None: #is it better if there is no relative group
         priv_group = groups[0]
@@ -339,11 +339,11 @@ def Equality_of_Opportunity(pred_labels, true_labels, groups, priv_group=None):
     """
     
     if isinstance(pred_labels, Tensor):
-        pred_labels = pred_labels.numpy()
+        pred_labels = pred_labels.detach().numpy()
     if isinstance(true_labels, Tensor):
-        true_labels = true_labels.numpy()
+        true_labels = true_labels.detach().numpy()
     if isinstance(groups, Tensor):
-        groups = groups.numpy()
+        groups = groups.detach().numpy()
     
     if priv_group == None:
         priv_group = groups[0]
@@ -364,11 +364,11 @@ def Equalized_Odds(pred_labels, true_labels, groups, priv_group=None):
     """
     
     if isinstance(pred_labels, Tensor):
-        pred_labels = pred_labels.numpy()
+        pred_labels = pred_labels.detach().numpy()
     if isinstance(true_labels, Tensor):
-        true_labels = true_labels.numpy()
+        true_labels = true_labels.detach().numpy()
     if isinstance(groups, Tensor):
-        groups = groups.numpy()
+        groups = groups.detach().numpy()
 
     if priv_group is None:        
         priv_group = groups[0]    
@@ -378,7 +378,6 @@ def Equalized_Odds(pred_labels, true_labels, groups, priv_group=None):
         fpr = {k: (v/fp[priv_group]) for k, v in fp.items()}   
         return {k:(tp,fpr[k]) for k,tp in tpr.items()}
     raise ZeroDivisionError("Privileged group has 0 false positives")     
-    
 
 if __name__=="__main__":
     pred_labels = np.array([0, 1, 1, 0, 0, 1, 1, 1])
