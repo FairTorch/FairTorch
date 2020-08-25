@@ -8,7 +8,7 @@ the forward pass.
 model: PyTorch Model
 metrics_dict: dictionary with name and function for each metric to be graphed
 groups: the groups of data as a 1D array
-prive_group: the group name of privileged
+**kwargs: additional parameters required by functions for metrics
 batchno: number of current batch (for x-axis)
 data: validation data
 labels: labels for validation data
@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class Monitor:
-	def __init__(self, model, metrics_dict, groups): 	
+	def __init__(self, model, metrics_dict, groups, **kwargs): 	
 		self.model = model
 		self.metric_names = []
 		self.metric_methods = []
@@ -44,7 +44,7 @@ class Monitor:
 			for g in range(len(groups)):
     			lines[g].set_xdata(np.append(lines[g].get_xdata(), batchno))
 				lines[g].set_ydata(np.append(lines[g].get_ydata(), \
-					self.metric_methods[m](scores, labels, self.groups))
+					self.metric_methods[m](scores, labels, self.groups)))
 			axs[m].relim()
 			axs[m].autoscale_view()
 			axs[m].legend()
