@@ -7,10 +7,10 @@ setup(
     url='https://github.com/FairTorch/FairTorch',
     author='FairTorch',
     author_email='fairtorch@gmail.com',
-    license='MIT License',
-    install_requires=['numpy', 
-                      'torch',
-                      'future'
+    license='BSD 2-clause',
+    packages=['FairTorch'],
+    install_requires=['mpi4py>=2.0',
+                      'numpy',                     
                       ],
 
     classifiers=[

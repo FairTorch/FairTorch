@@ -46,6 +46,8 @@ release = 'b0.0.1'
 
 master_doc = 'index'
 
+html_favicon = 'fairtorchlogo.png'
+
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
