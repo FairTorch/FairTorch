@@ -10,18 +10,20 @@ import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
 import numpy as np
+        
 
 class Monitor:
-    def __init__(self, model, metrics_dict, groups): 	
-        """
-        Attributes:
+    """
+    Attributes:
 
-        :param model:	the PyTorch Model Monitor is being used with
-        :param metric_names:	list of the names of the metrics used
-        :param metric_methods:	list of functions to evaluate metrics in the same order as metric_names
-        :param groups:	list of the groups of data 
-        :param fig:	Matplotlib Pyplot figure with subplots of the value of each metric over training steps
-        """
+    * :attr:`model` the PyTorch Model Monitor is being used with
+    * :attr:`metric_names` list of the names of the metrics used
+    * :attr:`metric_methods` list of functions to evaluate metrics in the same order as metric_names
+    * :attr:`groups` list of the groups of data 
+    * :attr:`fig` Matplotlib Pyplot figure with subplots of the value of each metric over training steps
+    """
+    def __init__(self, model, metrics_dict, groups): 	
+
         self.model = model
         self.metric_names = []
         self.metric_methods = []
@@ -43,10 +45,10 @@ class Monitor:
 
         Parameters:
 
-            :param step_no: number of current training step (e.g. mini-batch number, batch number, epoch number)
-            :param data: validation data as list of inputs to model
-            :param data_groups: the group of each element in data as a 1D array
-            :param labels: labels for each element in data as a 1D array
+        * :attr:`step_no` number of current training step (e.g. mini-batch number, batch number, epoch number)
+        * :attr:`data` validation data as list of inputs to model
+        * :attr:`data_groups` the group of each element in data as a 1D array
+        * :attr:`labels` labels for each element in data as a 1D array
         """
         
         scores = self.model(data)
