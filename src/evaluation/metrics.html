@@ -1,0 +1,489 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>metrics module &mdash; FairTorch b0.0.1 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/fairtorchlogo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="training" href="../training/modules.html" />
+    <link rel="prev" title="evaluation" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> FairTorch
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Python API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="modules.html">evaluation</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">metrics module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fairness-metrics">Fairness Metrics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../training/modules.html">training</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About Us</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FairTorch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../modules.html">Python API</a> &raquo;</li>
+        
+          <li><a href="modules.html">evaluation</a> &raquo;</li>
+        
+      <li>metrics module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/src/evaluation/metrics.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-metrics">
+<span id="metrics-module"></span><h1>metrics module<a class="headerlink" href="#module-metrics" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="fairness-metrics">
+<h2>Fairness Metrics<a class="headerlink" href="#fairness-metrics" title="Permalink to this headline">¶</a></h2>
+<p>Parameter definitions:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">param pred_labels:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">predicted output from model as a 1D array (should be all 1’s and 0’s because binary output)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">param true_labels:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body">the true labels as a 1D array (same size and format as pred_labels)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">param groups:</th><td class="field-body">the group of each element as a 1D array</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">param priv_groups:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body">the group name of privileged</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<dl class="function">
+<dt id="metrics.Demographic_Parity">
+<code class="descclassname">metrics.</code><code class="descname">Demographic_Parity</code><span class="sig-paren">(</span><em>pred_labels</em>, <em>true_labels</em>, <em>groups</em>, <em>priv_group=None</em><span class="sig-paren">)</span><a class="headerlink" href="#metrics.Demographic_Parity" title="Permalink to this definition">¶</a></dt>
+<dd><p>A fair algorithm would have an equal rate of positive outcomes <span class="math notranslate nohighlight">\((\hat{Y}=1)\)</span> in privileged group <span class="math notranslate nohighlight">\((A=0)\)</span> and unprivileged groups <span class="math notranslate nohighlight">\((A=1)\)</span>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Math:</th><td class="field-body"><span class="math notranslate nohighlight">\(P(\hat{Y} = 1|A=0) = P(\hat{Y} = 1|A=1)\)</span></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary of predicted positive outcomes relative to the privileged group</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metrics.Equality_of_Opportunity">
+<code class="descclassname">metrics.</code><code class="descname">Equality_of_Opportunity</code><span class="sig-paren">(</span><em>pred_labels</em>, <em>true_labels</em>, <em>groups</em>, <em>priv_group=None</em><span class="sig-paren">)</span><a class="headerlink" href="#metrics.Equality_of_Opportunity" title="Permalink to this definition">¶</a></dt>
+<dd><p>A fair algorithm would have an equal rate of true positives in privileged and unprivileged groups.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Math:</th><td class="field-body"><span class="math notranslate nohighlight">\(P(\hat{Y}=1|A=0, Y=1) = P(\hat{Y}=1|A=1, Y=1)\)</span></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary of true positives relative to the privileged group</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metrics.Equalized_Odds">
+<code class="descclassname">metrics.</code><code class="descname">Equalized_Odds</code><span class="sig-paren">(</span><em>pred_labels</em>, <em>true_labels</em>, <em>groups</em>, <em>priv_group=None</em><span class="sig-paren">)</span><a class="headerlink" href="#metrics.Equalized_Odds" title="Permalink to this definition">¶</a></dt>
+<dd><p>A fair algorithm should have equal rates for true positives and false positives in the privileged and unprivileged groups respectively.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Math:</th><td class="field-body"><span class="math notranslate nohighlight">\(P(\hat{Y}=1|A=0,Y=y) = P(\hat{Y} = 1 | A=1, Y=y), \forall y \in \{0,1\}\)</span></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary of tuples consisting of true positives and false positives, relative to the privileged group</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metrics.false_disc_rate">
+<code class="descclassname">metrics.</code><code class="descname">false_disc_rate</code><span class="sig-paren">(</span><em>pred_labels</em>, <em>true_labels</em>, <em>groups</em><span class="sig-paren">)</span><a class="headerlink" href="#metrics.false_disc_rate" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Math:</th><td class="field-body"><span class="math notranslate nohighlight">\(FDR_g = \frac{FP_g}{PP_g} = P(Y=0 | \hat{Y} = 1, A = g), \forall g \in G\)</span></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary of fraction of false positives within the predicted positive of the group</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metrics.false_neg">
+<code class="descclassname">metrics.</code><code class="descname">false_neg</code><span class="sig-paren">(</span><em>pred_labels</em>, <em>true_labels</em>, <em>groups</em><span class="sig-paren">)</span><a class="headerlink" href="#metrics.false_neg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the number of elements in a group with a negative prediction but positive true label.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Math:</th><td class="field-body"><span class="math notranslate nohighlight">\(\hat{Y} = 0, Y=1\)</span></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary of total false negative predictions for each group</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metrics.false_neg_rate">
+<code class="descclassname">metrics.</code><code class="descname">false_neg_rate</code><span class="sig-paren">(</span><em>pred_labels</em>, <em>true_labels</em>, <em>groups</em><span class="sig-paren">)</span><a class="headerlink" href="#metrics.false_neg_rate" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Math:</th><td class="field-body"><span class="math notranslate nohighlight">\(FNR_g = \frac{FN_g}{TP_g + FN_g} = P(\hat{Y}=0 |  Y = 1, A = g), \forall g \in G\)</span></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary of fraction of false negatives within the labeled positives of the group</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metrics.false_omis_rate">
+<code class="descclassname">metrics.</code><code class="descname">false_omis_rate</code><span class="sig-paren">(</span><em>pred_labels</em>, <em>true_labels</em>, <em>groups</em><span class="sig-paren">)</span><a class="headerlink" href="#metrics.false_omis_rate" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Math:</th><td class="field-body"><span class="math notranslate nohighlight">\(FOR_g = \frac{FN_g}{PN_g} = P(Y=1 | \hat{Y} = 0, A = g), \forall g \in G\)</span></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary of fraction of false negatives within the predicted negatives of the group</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metrics.false_pos">
+<code class="descclassname">metrics.</code><code class="descname">false_pos</code><span class="sig-paren">(</span><em>pred_labels</em>, <em>true_labels</em>, <em>groups</em><span class="sig-paren">)</span><a class="headerlink" href="#metrics.false_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the number of elements in a group with a positive prediction but negative true label.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Math:</th><td class="field-body"><span class="math notranslate nohighlight">\(\hat{Y} = 1, Y=0\)</span></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary of total false positive predictions for each group</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metrics.false_pos_rate">
+<code class="descclassname">metrics.</code><code class="descname">false_pos_rate</code><span class="sig-paren">(</span><em>pred_labels</em>, <em>true_labels</em>, <em>groups</em><span class="sig-paren">)</span><a class="headerlink" href="#metrics.false_pos_rate" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Math:</th><td class="field-body"><span class="math notranslate nohighlight">\(FPR_g = \frac{FP_g}{TN_g + FP_g} = P(\hat{Y}=1 | Y= 0, A = g), \forall g \in G\)</span></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary of fraction of false positives within the labeled negatives of the group</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metrics.pred_neg">
+<code class="descclassname">metrics.</code><code class="descname">pred_neg</code><span class="sig-paren">(</span><em>pred_labels</em>, <em>true_labels</em>, <em>groups</em><span class="sig-paren">)</span><a class="headerlink" href="#metrics.pred_neg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the number of predicted negative elements in a group: <span class="math notranslate nohighlight">\(PN_g = (\hat{Y} = 0)\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dictionary of negative predictions for each group</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metrics.pred_pos">
+<code class="descclassname">metrics.</code><code class="descname">pred_pos</code><span class="sig-paren">(</span><em>pred_labels</em>, <em>true_labels</em>, <em>groups</em><span class="sig-paren">)</span><a class="headerlink" href="#metrics.pred_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the number of predicted positive elements in a group: <span class="math notranslate nohighlight">\(PP_g = (\hat{Y}=1)\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dictionary of positive predictions for each group</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metrics.pred_pos_rate">
+<code class="descclassname">metrics.</code><code class="descname">pred_pos_rate</code><span class="sig-paren">(</span><em>pred_labels</em>, <em>true_labels</em>, <em>groups</em><span class="sig-paren">)</span><a class="headerlink" href="#metrics.pred_pos_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates predictive positive rate as <span class="math notranslate nohighlight">\(PPR_g=\frac{PP_g}{TPP}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dictionary of the fraction positive predictions that belong to each group</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metrics.pred_prevalence">
+<code class="descclassname">metrics.</code><code class="descname">pred_prevalence</code><span class="sig-paren">(</span><em>pred_labels</em>, <em>true_labels</em>, <em>groups</em><span class="sig-paren">)</span><a class="headerlink" href="#metrics.pred_prevalence" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Math:</th><td class="field-body"><span class="math notranslate nohighlight">\(\frac{PP_g}{|g|} = P(\hat{Y}=1 | A=g), \forall g \in G\)</span></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary of the fraction of positive predictions within each group</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metrics.total_pred_pos">
+<code class="descclassname">metrics.</code><code class="descname">total_pred_pos</code><span class="sig-paren">(</span><em>pred_labels</em><span class="sig-paren">)</span><a class="headerlink" href="#metrics.total_pred_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates total predictive positives across all groups <span class="math notranslate nohighlight">\(TPP=\sum_{g_1}^{g_n} PP_g\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">integer number of positive predictions in whole sample</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metrics.true_neg">
+<code class="descclassname">metrics.</code><code class="descname">true_neg</code><span class="sig-paren">(</span><em>pred_labels</em>, <em>true_labels</em>, <em>groups</em><span class="sig-paren">)</span><a class="headerlink" href="#metrics.true_neg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the number of elements in a group with a negative prediction and negative true label.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Math:</th><td class="field-body"><span class="math notranslate nohighlight">\(\hat{Y} = 0, Y=0\)</span></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary of total true negative predictions for each group</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metrics.true_pos">
+<code class="descclassname">metrics.</code><code class="descname">true_pos</code><span class="sig-paren">(</span><em>pred_labels</em>, <em>true_labels</em>, <em>groups</em><span class="sig-paren">)</span><a class="headerlink" href="#metrics.true_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the number of elements in a group with a positive prediction and positive true label.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Math:</th><td class="field-body"><span class="math notranslate nohighlight">\(\hat{Y} = 1, Y=1\)</span></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary of total true positive in each group</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../training/modules.html" class="btn btn-neutral float-right" title="training" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules.html" class="btn btn-neutral float-left" title="evaluation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, FairTorch Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

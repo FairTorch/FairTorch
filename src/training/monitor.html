@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>monitor module &mdash; FairTorch b0.0.1 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/fairtorchlogo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="model_wrappers module" href="model_wrappers.html" />
+    <link rel="prev" title="training" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> FairTorch
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Python API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../evaluation/modules.html">evaluation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="modules.html">training</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">monitor module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#monitor">Monitor</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="model_wrappers.html">model_wrappers module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About Us</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FairTorch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../modules.html">Python API</a> &raquo;</li>
+        
+          <li><a href="modules.html">training</a> &raquo;</li>
+        
+      <li>monitor module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/src/training/monitor.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-monitor">
+<span id="monitor-module"></span><h1>monitor module<a class="headerlink" href="#module-monitor" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="monitor">
+<h2>Monitor<a class="headerlink" href="#monitor" title="Permalink to this headline">¶</a></h2>
+<p>A wrapper class for a neural network model which plots fairness metrics with
+the forward pass.</p>
+<dl class="class">
+<dt id="monitor.Monitor">
+<em class="property">class </em><code class="descclassname">monitor.</code><code class="descname">Monitor</code><span class="sig-paren">(</span><em>model</em>, <em>metrics_dict</em>, <em>groups</em><span class="sig-paren">)</span><a class="headerlink" href="#monitor.Monitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attributes:</p>
+<ul class="simple">
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">model</span></code> the PyTorch Model Monitor is being used with</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">metric_names</span></code> list of the names of the metrics used</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">metric_methods</span></code> list of functions to evaluate metrics in the same order as metric_names</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">groups</span></code> list of the groups of data</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">fig</span></code> Matplotlib Pyplot figure with subplots of the value of each metric over training steps</li>
+</ul>
+<dl class="method">
+<dt id="monitor.Monitor.get_fig">
+<code class="descname">get_fig</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#monitor.Monitor.get_fig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get fig attribute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Matplotlib Pyplot figure with subplots corresponding to each metric</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="monitor.Monitor.update_fig">
+<code class="descname">update_fig</code><span class="sig-paren">(</span><em>step_no</em>, <em>data</em>, <em>data_groups</em>, <em>labels</em><span class="sig-paren">)</span><a class="headerlink" href="#monitor.Monitor.update_fig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update figure at the end of a foward pass with values of metrics for each group and display the figure
+Assumes model outputs logits to be fed into softmax activation.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">step_no</span></code> number of current training step (e.g. mini-batch number, batch number, epoch number)</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">data</span></code> validation data as list of inputs to model</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">data_groups</span></code> the group of each element in data as a 1D array</li>
+<li><code class="xref py py-attr docutils literal notranslate"><span class="pre">labels</span></code> labels for each element in data as a 1D array</li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="model_wrappers.html" class="btn btn-neutral float-right" title="model_wrappers module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules.html" class="btn btn-neutral float-left" title="training" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, FairTorch Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
