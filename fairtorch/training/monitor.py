@@ -46,7 +46,7 @@ class Monitor:
 		self.fig, axs = plt.subplots(len(metrics_dict))
 		for m in range(len(self.metric_names)):
 			axs[m].set_xlabel('Training Step')
-			axs[m].set_ylabel(metric_names[m])
+			axs[m].set_ylabel(self.metric_names[m])
 			for g in groups:
 				axs[m].plot([],[], label = g)
 
