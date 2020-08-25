@@ -4,9 +4,9 @@ Fairness Metrics
 
 Parameter definitions:
 
-    :param pred_labels:     predicted output from model as a 1D array (should be all 1's and 0's because binary output)
-    :param true_labels:     the true labels as a 1D array (same size and format as pred_labels)
-    :param groups:          the group of each element as a 1D array
+    :param pred_labels:     predicted output from model as a 1D numpy array (should be all 1's and 0's because binary output)
+    :param true_labels:     the true labels as a 1D numpy array (same size and format as pred_labels)
+    :param groups:          the group of each element as a 1D numpy array
     :param priv_groups:     the group name of privileged
 
 """
@@ -16,7 +16,7 @@ from torch import Tensor
 
 def pred_pos(pred_labels, true_labels, groups):
     """
-    Predicted Positive :math:`(PP_g)`
+    Calculates the number of predicted positive elements in a group: :math:`PP_g = (\\hat{Y}=1)`
 
     :return: dictionary of positive predictions for each group
     """
@@ -38,7 +38,7 @@ def pred_pos(pred_labels, true_labels, groups):
     return group_correct
 
 def total_pred_pos(pred_labels):
-    """
+    """ 
     Calculates total predictive positives across all groups :math:`TPP=\\sum_{g_1}^{g_n} PP_g`
 
     :return: integer number of positive predictions in whole sample
@@ -51,7 +51,7 @@ def total_pred_pos(pred_labels):
 
 def pred_neg(pred_labels, true_labels, groups):
     """
-    Predicted Negative :math:`(PN_g)`
+    Calculates the number of predicted negative elements in a group: :math:`PN_g = (\\hat{Y} = 0)`
 
     :return: dictionary of negative predictions for each group
     """
@@ -74,6 +74,8 @@ def pred_neg(pred_labels, true_labels, groups):
 
 def pred_prevalence(pred_labels, true_labels, groups):
     """
+    :math: :math:`\\frac{PP_g}{|g|} = P(\\hat{Y}=1 | A=g), \\forall g \\in G` 
+
     :return: dictionary of the fraction of positive predictions within each group
     """
 
@@ -114,6 +116,10 @@ def pred_pos_rate(pred_labels, true_labels, groups):
 
 def true_pos(pred_labels, true_labels, groups):
     """
+    Calculates the number of elements in a group with a positive prediction and positive true label.
+
+    :math: :math:`\\hat{Y} = 1, Y=1`
+
     :return: dictionary of total true positive in each group
     """
     
@@ -134,6 +140,10 @@ def true_pos(pred_labels, true_labels, groups):
 
 def false_neg (pred_labels, true_labels, groups):
     """
+    Calculates the number of elements in a group with a negative prediction but positive true label.
+
+    :math: :math:`\\hat{Y} = 0, Y=1`
+
     :return: dictionary of total false negative predictions for each group
     """
     
@@ -153,6 +163,10 @@ def false_neg (pred_labels, true_labels, groups):
 
 def false_pos(pred_labels, true_labels, groups):
     """
+    Calculates the number of elements in a group with a positive prediction but negative true label.
+
+    :math: :math:`\\hat{Y} = 1, Y=0`
+
     :return: dictionary of total false positive predictions for each group
     """
     
@@ -173,6 +187,10 @@ def false_pos(pred_labels, true_labels, groups):
 
 def true_neg (pred_labels, true_labels, groups):
     """
+    Calculates the number of elements in a group with a negative prediction and negative true label.
+
+    :math: :math:`\\hat{Y} = 0, Y=0`
+
     :return: dictionary of total true negative predictions for each group
     """
     
@@ -192,8 +210,7 @@ def true_neg (pred_labels, true_labels, groups):
 
 def false_disc_rate(pred_labels, true_labels, groups):
     """
-    :math: `FDR_g = \\frac{FP_g}{PP_g} = P(Y=0 | \\hat{Y} = 1, A = a_i)`
-
+    :math: :math:`FDR_g = \\frac{FP_g}{PP_g} = P(Y=0 | \\hat{Y} = 1, A = g), \\forall g \\in G`
 
     :return: dictionary of fraction of false positives within the predicted positive of the group
     """
@@ -212,7 +229,7 @@ def false_disc_rate(pred_labels, true_labels, groups):
 
 def false_omis_rate(pred_labels, true_labels, groups):
     """
-    :math: `FOR_g = \\frac{FN_g}{PN_g} = P(Y=1 | \\hat{Y} = 0, A = a_i)`
+    :math: :math:`FOR_g = \\frac{FN_g}{PN_g} = P(Y=1 | \\hat{Y} = 0, A = g), \\forall g \\in G`
 
     :return: dictionary of fraction of false negatives within the predicted negatives of the group
     """
@@ -232,7 +249,7 @@ def false_omis_rate(pred_labels, true_labels, groups):
 
 def false_pos_rate (pred_labels, true_labels, groups):
     """
-    :math:`FPR_g = \\frac{FP_g}{TN_g + FP_g} = P(\\hat{Y}=1 | Y= 0, A = a_i)`
+    :math: :math:`FPR_g = \\frac{FP_g}{TN_g + FP_g} = P(\\hat{Y}=1 | Y= 0, A = g), \\forall g \\in G`
     
     :return: dictionary of fraction of false positives within the labeled negatives of the group
     """
@@ -261,7 +278,7 @@ def false_pos_rate (pred_labels, true_labels, groups):
 
 def false_neg_rate (pred_labels, true_labels, groups):
     """
-    :math:`FNR_g = \\frac{FN_g}{TP_g + FN_g} = P(\\hat{Y}=0 |  Y = 1, A = a_i)`
+    :math: :math:`FNR_g = \\frac{FN_g}{TP_g + FN_g} = P(\\hat{Y}=0 |  Y = 1, A = g), \\forall g \\in G`
 
     :return: dictionary of fraction of false negatives within the labeled positives of the group
     """
@@ -289,7 +306,9 @@ def false_neg_rate (pred_labels, true_labels, groups):
 
 def Demographic_Parity(pred_labels, true_labels, groups, priv_group=None):
     """
-    A fair algorithm would have an equal rate of positive outcomes in privileged and unprivileged groups.
+    A fair algorithm would have an equal rate of positive outcomes :math:`(\\hat{Y}=1)` in privileged group :math:`(A=0)` and unprivileged groups :math:`(A=1)`.
+
+    :math: :math:`P(\\hat{Y} = 1|A=0) = P(\\hat{Y} = 1|A=1)` 
 
     :return: dictionary of predicted positive outcomes relative to the privileged group
     """
@@ -314,6 +333,8 @@ def Equality_of_Opportunity(pred_labels, true_labels, groups, priv_group=None):
     """
     A fair algorithm would have an equal rate of true positives in privileged and unprivileged groups.
 
+    :math: :math:`P(\hat{Y}=1|A=0, Y=1) = P(\hat{Y}=1|A=1, Y=1)`
+
     :return: dictionary of true positives relative to the privileged group
     """
     
@@ -335,9 +356,9 @@ def Equality_of_Opportunity(pred_labels, true_labels, groups, priv_group=None):
 
 def Equalized_Odds(pred_labels, true_labels, groups, priv_group=None):
     """
-    :math:`P(Y=1|A=0,Y=y) = P(\\hat{Y} = 1 | A=1, Y=y), \\hat{y} \\in \\{0,1\\}`
+    A fair algorithm should have equal rates for true positives and false positives in the privileged and unprivileged groups respectively. 
 
-    A fair algorithm should have equal rates for true positivees and false positives in the privileged and unprivileged groups respectively. 
+    :math: :math:`P(\\hat{Y}=1|A=0,Y=y) = P(\\hat{Y} = 1 | A=1, Y=y), \\forall y \\in \\{0,1\\}`
     
     :return: dictionary of tuples consisting of true positives and false positives, relative to the privileged group
     """
@@ -357,7 +378,6 @@ def Equalized_Odds(pred_labels, true_labels, groups, priv_group=None):
         fpr = {k: (v/fp[priv_group]) for k, v in fp.items()}   
         return {k:(tp,fpr[k]) for k,tp in tpr.items()}
     raise ZeroDivisionError("Privileged group has 0 false positives")     
-    
 
 if __name__=="__main__":
     pred_labels = np.array([0, 1, 1, 0, 0, 1, 1, 1])
