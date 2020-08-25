@@ -3,4 +3,4 @@ Installation
 
 ``git clone https://github.com/FairTorch/FairTorch.git``
 
-``pip install FairTorch``
+``pip3 install FairTorch``
