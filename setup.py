@@ -1,14 +1,13 @@
 from setuptools import setup
 
 setup(
-    name=‘FairTorch’,
-    version=‘0.1.0’,
-    description=‘A library for fair machine learning created for the PyTorch Summer Hackathon 2020.’,
-    url=‘https://github.com/FairTorch/FairTorch’,
-    author=‘FairTorch’,
-    author_email='fairtorch@gmail.com’,
+    name='FairTorch',
+    version='0.1.0',
+    description='A library for fair machine learning created for the PyTorch Summer Hackathon 2020.',
+    url='https://github.com/FairTorch/FairTorch',
+    author='FairTorch',
+    author_email='fairtorch@gmail.com',
     license='MIT License',
-    packages=['FairTorch'],
     install_requires=['numpy', 
                       'torch',
                       'future'
