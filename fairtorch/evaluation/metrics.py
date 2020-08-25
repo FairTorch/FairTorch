@@ -12,6 +12,7 @@ Parameter definitions:
 """
 
 import numpy as np
+from torch import Tensor
 
 def pred_pos(pred_labels, true_labels, groups):
     """
@@ -19,6 +20,13 @@ def pred_pos(pred_labels, true_labels, groups):
 
     :return: dictionary of positive predictions for each group
     """
+
+    if isinstance(pred_labels, Tensor):
+        pred_labels = pred_labels.numpy()
+    if isinstance(true_labels, Tensor):
+        true_labels = true_labels.numpy()
+    if isinstance(groups, Tensor):
+        groups = groups.numpy()
 
     correct = pred_labels == true_labels
     group_correct = {k : 0 for k in np.unique(groups)}
@@ -35,6 +43,9 @@ def total_pred_pos(pred_labels):
 
     :return: integer number of positive predictions in whole sample
     """
+    
+    if isinstance(pred_labels, Tensor):
+        pred_labels = pred_labels.numpy()
 
     return np.sum(pred_labels == 1)
 
@@ -44,6 +55,13 @@ def pred_neg(pred_labels, true_labels, groups):
 
     :return: dictionary of negative predictions for each group
     """
+    
+    if isinstance(pred_labels, Tensor):
+        pred_labels = pred_labels.numpy()
+    if isinstance(true_labels, Tensor):
+        true_labels = true_labels.numpy()
+    if isinstance(groups, Tensor):
+        groups = groups.numpy()
     
     correct = pred_labels == 0
     group_correct = {k : 0 for k in np.unique(groups)}
@@ -61,6 +79,13 @@ def pred_prevalence(pred_labels, true_labels, groups):
     :return: dictionary of the fraction of positive predictions within each group
     """
 
+    if isinstance(pred_labels, Tensor):
+        pred_labels = pred_labels.numpy()
+    if isinstance(true_labels, Tensor):
+        true_labels = true_labels.numpy()
+    if isinstance(groups, Tensor):
+        groups = groups.numpy()
+    
     group_total = {k : 0 for k in np.unique(groups)}
     pp = pred_pos(pred_labels, true_labels, groups)
 
@@ -77,6 +102,13 @@ def pred_pos_rate(pred_labels, true_labels, groups):
     :return: dictionary of the fraction positive predictions that belong to each group
     """
     
+    if isinstance(pred_labels, Tensor):
+        pred_labels = pred_labels.numpy()
+    if isinstance(true_labels, Tensor):
+        true_labels = true_labels.numpy()
+    if isinstance(groups, Tensor):
+        groups = groups.numpy()
+    
     tpp = total_pred_pos(pred_labels)
     pp = pred_pos(pred_labels, true_labels, groups)
 
@@ -90,6 +122,14 @@ def true_pos(pred_labels, true_labels, groups):
 
     :return: dictionary of total true positive in each group
     """
+    
+    if isinstance(pred_labels, Tensor):
+        pred_labels = pred_labels.numpy()
+    if isinstance(true_labels, Tensor):
+        true_labels = true_labels.numpy()
+    if isinstance(groups, Tensor):
+        groups = groups.numpy()
+    
     group_correct = {k : 0 for k in np.unique(groups)}
 
     for i in range(len(pred_labels)):
@@ -106,6 +146,13 @@ def false_neg (pred_labels, true_labels, groups):
 
     :return: dictionary of total false negative predictions for each group
     """
+    
+    if isinstance(pred_labels, Tensor):
+        pred_labels = pred_labels.numpy()
+    if isinstance(true_labels, Tensor):
+        true_labels = true_labels.numpy()
+    if isinstance(groups, Tensor):
+        groups = groups.numpy()
 
     group_correct = {k : 0 for k in np.unique(groups)}
     for i in range(len(pred_labels)):
@@ -122,6 +169,13 @@ def false_pos(pred_labels, true_labels, groups):
 
     :return: dictionary of total false positive predictions for each group
     """
+    
+    if isinstance(pred_labels, Tensor):
+        pred_labels = pred_labels.numpy()
+    if isinstance(true_labels, Tensor):
+        true_labels = true_labels.numpy()
+    if isinstance(groups, Tensor):
+        groups = groups.numpy()
 
     group_correct = {k : 0 for k in np.unique(groups)}
     for i in range(len(pred_labels)):
@@ -139,6 +193,13 @@ def true_neg (pred_labels, true_labels, groups):
 
     :return: dictionary of total true negative predictions for each group
     """
+    
+    if isinstance(pred_labels, Tensor):
+        pred_labels = pred_labels.numpy()
+    if isinstance(true_labels, Tensor):
+        true_labels = true_labels.numpy()
+    if isinstance(groups, Tensor):
+        groups = groups.numpy()
 
     group_correct = {k : 0 for k in np.unique(groups)}
     for i in range(len(pred_labels)):
@@ -153,6 +214,14 @@ def false_disc_rate(pred_labels, true_labels, groups):
 
     :return: dictionary of fraction of false positives within the predicted positive of the group
     """
+    
+    if isinstance(pred_labels, Tensor):
+        pred_labels = pred_labels.numpy()
+    if isinstance(true_labels, Tensor):
+        true_labels = true_labels.numpy()
+    if isinstance(groups, Tensor):
+        groups = groups.numpy()
+    
     fp = false_pos(pred_labels, true_labels, groups)
     pp = pred_pos(pred_labels, true_labels, groups)
 
@@ -164,6 +233,13 @@ def false_omis_rate(pred_labels, true_labels, groups):
 
     :return: dictionary of fraction of false negatives within the predicted negatives of the group
     """
+    
+    if isinstance(pred_labels, Tensor):
+        pred_labels = pred_labels.numpy()
+    if isinstance(true_labels, Tensor):
+        true_labels = true_labels.numpy()
+    if isinstance(groups, Tensor):
+        groups = groups.numpy()
 
     fn = false_neg(pred_labels, true_labels, groups)
     pn = pred_neg(pred_labels, true_labels, groups)
@@ -172,45 +248,61 @@ def false_omis_rate(pred_labels, true_labels, groups):
 
 
 def false_pos_rate (pred_labels, true_labels, groups):
-  """
-  :math: :math:`FPR_g = \\frac{FP_g}{TN_g + FP_g} = P(\\hat{Y}=1 | Y= 0, A = g), \\forall g \\in G`
-
-  :return: dictionary of fraction of false positives within the labeled negatives of the group
-  """
-  unique_groups = np.unique(groups)
-  labeled_neg = {k : 0 for k in unique_groups}
-  group_correct = {k : 0 for k in unique_groups}
-  for i in range(len(pred_labels)):
-    if true_labels[i] == 0:
-      labeled_neg[groups[i]] += 1
-      if pred_labels[i] == 1:
-        group_correct[groups[i]] += 1
+    """
+    :math: :math:`FPR_g = \\frac{FP_g}{TN_g + FP_g} = P(\\hat{Y}=1 | Y= 0, A = g), \\forall g \\in G`
+    
+    :return: dictionary of fraction of false positives within the labeled negatives of the group
+    """
+    
+    if isinstance(pred_labels, Tensor):
+        pred_labels = pred_labels.numpy()
+    if isinstance(true_labels, Tensor):
+        true_labels = true_labels.numpy()
+    if isinstance(groups, Tensor):
+        groups = groups.numpy()
+    
+    unique_groups = np.unique(groups)
+    labeled_neg = {k : 0 for k in unique_groups}
+    group_correct = {k : 0 for k in unique_groups}
+    for i in range(len(pred_labels)):
+        if true_labels[i] == 0:
+            labeled_neg[groups[i]] += 1
+            if pred_labels[i] == 1:
+                group_correct[groups[i]] += 1
   
-  for i in range(len(group_correct)):
-    group_correct[groups[i]] /= labeled_neg[groups[i]]  
+    for i in range(len(group_correct)):
+        group_correct[groups[i]] /= labeled_neg[groups[i]]  
         
-  return group_correct
+    return group_correct
 
 
 def false_neg_rate (pred_labels, true_labels, groups):
-  """
-  :math: :math:`FNR_g = \\frac{FN_g}{TP_g + FN_g} = P(\\hat{Y}=0 |  Y = 1, A = g), \\forall g \\in G`
+    """
+    :math: :math:`FNR_g = \\frac{FN_g}{TP_g + FN_g} = P(\\hat{Y}=0 |  Y = 1, A = g), \\forall g \\in G`
 
-  :return: dictionary of fraction of false negatives within the labeled positives of the group
-  """
-  unique_groups = np.unique(groups)
-  labeled_pos = {k : 0 for k in unique_groups}
-  group_correct = {k : 0 for k in unique_groups}
-  for i in range(len(pred_labels)):
-    if true_labels[i] == 1:
-      labeled_pos[groups[i]] += 1
-      if pred_labels[i] == 0:
-        group_correct[groups[i]] += 1
+    :return: dictionary of fraction of false negatives within the labeled positives of the group
+    """
+    
+    if isinstance(pred_labels, Tensor):
+        pred_labels = pred_labels.numpy()
+    if isinstance(true_labels, Tensor):
+        true_labels = true_labels.numpy()
+    if isinstance(groups, Tensor):
+        groups = groups.numpy()
+  
+    unique_groups = np.unique(groups)
+    labeled_pos = {k : 0 for k in unique_groups}
+    group_correct = {k : 0 for k in unique_groups}
+    for i in range(len(pred_labels)):
+        if true_labels[i] == 1:
+            labeled_pos[groups[i]] += 1
+            if pred_labels[i] == 0:
+                group_correct[groups[i]] += 1
 
-  for i in range(len(unique_groups)):
-    group_correct[unique_groups[i]] /= labeled_pos[unique_groups[i]]  
+    for i in range(len(unique_groups)):
+        group_correct[unique_groups[i]] /= labeled_pos[unique_groups[i]]  
         
-  return group_correct
+    return group_correct
 
 def Demographic_Parity(pred_labels, true_labels, groups, priv_group=None):
     """
@@ -220,6 +312,13 @@ def Demographic_Parity(pred_labels, true_labels, groups, priv_group=None):
 
     :return: dictionary of predicted positive outcomes relative to the privileged group
     """
+    
+    if isinstance(pred_labels, Tensor):
+        pred_labels = pred_labels.numpy()
+    if isinstance(true_labels, Tensor):
+        true_labels = true_labels.numpy()
+    if isinstance(groups, Tensor):
+        groups = groups.numpy()
     
     if priv_group == None: #is it better if there is no relative group
         priv_group = groups[0]
@@ -238,6 +337,14 @@ def Equality_of_Opportunity(pred_labels, true_labels, groups, priv_group=None):
 
     :return: dictionary of true positives relative to the privileged group
     """
+    
+    if isinstance(pred_labels, Tensor):
+        pred_labels = pred_labels.numpy()
+    if isinstance(true_labels, Tensor):
+        true_labels = true_labels.numpy()
+    if isinstance(groups, Tensor):
+        groups = groups.numpy()
+    
     if priv_group == None:
         priv_group = groups[0]
 
@@ -255,6 +362,13 @@ def Equalized_Odds(pred_labels, true_labels, groups, priv_group=None):
     
     :return: dictionary of tuples consisting of true positives and false positives, relative to the privileged group
     """
+    
+    if isinstance(pred_labels, Tensor):
+        pred_labels = pred_labels.numpy()
+    if isinstance(true_labels, Tensor):
+        true_labels = true_labels.numpy()
+    if isinstance(groups, Tensor):
+        groups = groups.numpy()
 
     if priv_group is None:        
         priv_group = groups[0]    
@@ -264,3 +378,17 @@ def Equalized_Odds(pred_labels, true_labels, groups, priv_group=None):
         fpr = {k: (v/fp[priv_group]) for k, v in fp.items()}   
         return {k:(tp,fpr[k]) for k,tp in tpr.items()}
     raise ZeroDivisionError("Privileged group has 0 false positives")     
+
+if __name__=="__main__":
+    pred_labels = np.array([0, 1, 1, 0, 0, 1, 1, 1])
+    true_labels = np.array([0, 0, 1, 0, 1, 1, 0, 0])
+    groups = np.array(['a', 'b', 'c', 'd', 'd', 'd', 'c', 'b'])
+
+    print(Equalized_Odds(pred_labels, true_labels, groups, 'c'))
+    
+    import torch
+
+    pred_labels = torch.from_numpy(pred_labels)
+    true_labels = torch.from_numpy(true_labels)
+
+    print(Equalized_Odds(pred_labels, true_labels, groups, 'c'))

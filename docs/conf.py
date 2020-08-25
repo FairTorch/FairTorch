@@ -46,6 +46,8 @@ release = 'b0.0.1'
 
 master_doc = 'index'
 
+html_favicon = 'fairtorchlogo.png'
+
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
@@ -85,7 +87,7 @@ html_static_path = ['_static']
 
 
 # add sourcecode to path
-sys.path.insert(0, os.path.abspath('../api'))
-sys.path.insert(0, os.path.abspath('../api/preprocessing'))
-sys.path.insert(0, os.path.abspath('../api/training'))
-sys.path.insert(0, os.path.abspath('../api/evaluation'))
+sys.path.insert(0, os.path.abspath('../fairtorch'))
+sys.path.insert(0, os.path.abspath('../fairtorch/preprocessing'))
+sys.path.insert(0, os.path.abspath('../fairtorch/training'))
+sys.path.insert(0, os.path.abspath('../fairtorch/evaluation'))

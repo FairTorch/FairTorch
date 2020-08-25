@@ -46,7 +46,7 @@ class FairModel(Module):
         # define and pretrain model
 
         model = Model()
-        model.train(X, y)
+        model.fit(X, y)
 
         # wrap pretrained model in FairModel adversary and train
         

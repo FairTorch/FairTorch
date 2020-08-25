@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='FairTorch',
-    version='0.1.0',    
+    version='0.1.0',
     description='A library for fair machine learning created for the PyTorch Summer Hackathon 2020.',
     url='https://github.com/FairTorch/FairTorch',
     author='FairTorch',
