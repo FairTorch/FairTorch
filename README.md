@@ -4,7 +4,7 @@ A library for fair machine learning created for the PyTorch Summer Hackathon 202
 ## Installation
 ``git clone https://github.com/FairTorch/FairTorch.git``
 
-``pip install FairTorch``
+``pip3 install FairTorch``
 
 ## Usage
 Once installed, one can import from FairTorch like so:
