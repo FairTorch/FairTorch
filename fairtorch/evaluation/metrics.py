@@ -4,9 +4,9 @@ Fairness Metrics
 
 Parameter definitions:
 
-    :param pred_labels:     predicted output from model as a 1D numpy array (should be all 1's and 0's because binary output)
-    :param true_labels:     the true labels as a 1D numpy array (same size and format as pred_labels)
-    :param groups:          the group of each element as a 1D numpy array
+    :param pred_labels:     predicted output from model as a 1D array (should be all 1's and 0's because binary output)
+    :param true_labels:     the true labels as a 1D array (same size and format as pred_labels)
+    :param groups:          the group of each element as a 1D array
     :param priv_groups:     the group name of privileged
 
 """
